@@ -48,3 +48,18 @@ if (playerInput === 'kamień') {
 }
 
 printMessage('Twój ruch to: ' + playerMove);
+
+// Wynik gry
+if (playerMove === 'nieznany ruch') {
+    printMessage('Błędny ruch – spróbuj jeszcze raz.');
+} else if (computerMove === playerMove) {
+    printMessage('Remis!');
+} else if (computerMove == 'kamień' && playerMove == 'papier') {
+    printMessage('Ty wygrywasz!');
+} else if (computerMove == 'papier' && playerMove == 'nożyce') {
+    printMessage('Ty wygrywasz!');
+} else if (computerMove == 'nożyce' && playerMove == 'kamień') {
+    printMessage('Ty wygrywasz!');
+} else {
+    printMessage('Tym razem przegrywasz :(');
+}
