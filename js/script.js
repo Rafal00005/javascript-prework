@@ -33,5 +33,18 @@ if (roundNumber === 1) {
 // Komunikaty o ruchach
 printMessage('Zagrałem ' + computerMove + '! Jeśli Twój ruch to papier, to wygrywasz!');
 
-let playerMove = 'papier';
+// Odczytanie ruchu gracza
+let playerInput = prompt('Wybierz swój ruch! Wpisz: kamień, papier albo nożyce.');
+
+let playerMove;
+if (playerInput === 'kamień') {
+    playerMove = 'kamień';
+} else if (playerInput === 'papier') {
+    playerMove = 'papier';
+} else if (playerInput === 'nożyce') {
+    playerMove = 'nożyce';
+} else {
+    playerMove = 'nieznany ruch';
+}
+
 printMessage('Twój ruch to: ' + playerMove);
