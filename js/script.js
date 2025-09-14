@@ -1,99 +1,56 @@
-function printMessage(msg){
-    let div = document.createElement('div');
-    div.innerHTML = msg;
-    document.getElementById('messages').appendChild(div);
+// === Logika gry: Kamień, Papier, Nożyce ===
+
+// zamiana liczby/tekstu na nazwę ruchu
+const getMoveName = (arg) => {
+  if (arg === 1 || arg === '1' || arg === 'kamień') return 'kamień';
+  if (arg === 2 || arg === '2' || arg === 'papier') return 'papier';
+  if (arg === 3 || arg === '3' || arg === 'nożyce') return 'nożyce';
+  return 'nieznany ruch';
+};
+
+// ocena wyniku
+const displayResult = (computerMove, playerMove) => {
+  if (playerMove === 'nieznany ruch') {
+    printMessage('Błędny ruch – spróbuj jeszcze raz.');
+  } else if (computerMove === playerMove) {
+    printMessage('Remis!');
+  } else if (
+    (computerMove === 'kamień' && playerMove === 'papier') ||
+    (computerMove === 'papier' && playerMove === 'nożyce') ||
+    (computerMove === 'nożyce' && playerMove === 'kamień')
+  ) {
+    printMessage('Ty wygrywasz!');
+  } else {
+    printMessage('Tym razem przegrywasz :(');
+  }
+};
+
+// === Główna funkcja: cała runda gry ===
+function playGame(playerInput) {
+  clearMessages(); // na początku funkcji
+
+  const randomFraction = Math.random();
+  printMessage('Wylosowany ułamek to: ' + randomFraction);
+
+  const calculation = randomFraction * 3 + 1;
+  printMessage('Ułamek pomnożony przez 3 i powiększony o 1: ' + calculation);
+
+  const roundNumber = Math.floor(calculation);
+  printMessage('Liczba po zaokrągleniu w dół to: ' + roundNumber);
+
+  const computerMove = getMoveName(roundNumber);
+  printMessage('Zagrałem ' + computerMove + '! Jeśli Twój ruch to papier, to wygrywasz!');
+
+  const playerMove = getMoveName(playerInput);
+  printMessage('Twój ruch to: ' + playerMove);
+
+  displayResult(computerMove, playerMove);
 }
 
-function clearMessages(){
-    document.getElementById('messages').innerHTML = '';
-}
+// === Listenery do guzików (ID: play-*) ===
+document.getElementById('play-rock').addEventListener('click', () => playGame(1));
+document.getElementById('play-paper').addEventListener('click', () => playGame(2));
+document.getElementById('play-scissors').addEventListener('click', () => playGame(3));
 
-clearMessages();
-
-/* === NOWA FUNKCJA: zamiana liczby/tekstu na nazwę ruchu === */
-function getMoveName(arg){
-    // pomocnicze logi – możesz zostawić podczas debugowania:
-    // console.log('getMoveName -> arg:', arg);
-
-    if (arg === 1 || arg === '1' || arg === 'kamień') {
-        return 'kamień';
-    } else if (arg === 2 || arg === '2' || arg === 'papier') {
-        return 'papier';
-    } else if (arg === 3 || arg === '3' || arg === 'nożyce') {
-        return 'nożyce';
-    }
-    return 'nieznany ruch';
-}
-
-/* === NOWA FUNKCJA: wyświetlenie wyniku === */
-function displayResult(argComputerMove, argPlayerMove){
-    // console.log('moves:', argComputerMove, argPlayerMove);
-
-    if (argPlayerMove === 'nieznany ruch') {
-        printMessage('Błędny ruch – spróbuj jeszcze raz.');
-    } else if (argComputerMove === argPlayerMove) {
-        printMessage('Remis!');
-    } else if (argComputerMove === 'kamień' && argPlayerMove === 'papier') {
-        printMessage('Ty wygrywasz!');
-    } else if (argComputerMove === 'papier' && argPlayerMove === 'nożyce') {
-        printMessage('Ty wygrywasz!');
-    } else if (argComputerMove === 'nożyce' && argPlayerMove === 'kamień') {
-        printMessage('Ty wygrywasz!');
-    } else {
-        printMessage('Tym razem przegrywasz :(');
-    }
-}
-
-// Losowanie liczby 1–3 (oraz komunikaty szkoleniowe jak w przykładzie)
-let randomFraction = Math.random();
-printMessage('Wylosowany ułamek to: ' + randomFraction);
-
-let calculation = randomFraction * 3 + 1;
-printMessage('Ułamek pomnożony przez 3 i powiększony o 1: ' + calculation);
-
-let roundNumber = Math.floor(calculation);
-printMessage('Liczba po zaokrągleniu w dół to: ' + roundNumber);
-
-// Rozpoznanie ruchu komputera na podstawie wylosowanej liczby
-// (stary kod zostawiony w komentarzu jako ściąga)
-/*
-let computerMove;
-if (roundNumber === 1) {
-    computerMove = 'kamień';
-} else if (roundNumber === 2) {
-    computerMove = 'papier';
-} else if (roundNumber === 3) {
-    computerMove = 'nożyce';
-}
-*/
-
-// Nowe – z użyciem funkcji:
-let computerMove = getMoveName(roundNumber);
-
-// Komunikaty o ruchach
-printMessage('Zagrałem ' + computerMove + '! Jeśli Twój ruch to papier, to wygrywasz!');
-
-// Odczytanie ruchu gracza
-let playerInput = prompt('Wybierz swój ruch! Wpisz: kamień, papier albo nożyce.');
-
-// (stary kod zostawiony w komentarzu jako ściąga)
-/*
-let playerMove;
-if (playerInput === 'kamień') {
-    playerMove = 'kamień';
-} else if (playerInput === 'papier') {
-    playerMove = 'papier';
-} else if (playerInput === 'nożyce') {
-    playerMove = 'nożyce';
-} else {
-    playerMove = 'nieznany ruch';
-}
-*/
-
-// Nowe – z użyciem funkcji:
-let playerMove = getMoveName(playerInput);
-
-printMessage('Twój ruch to: ' + playerMove);
-
-// Wynik gry – przeniesiony do funkcji displayResult
-displayResult(computerMove, playerMove);
+// Test z poprzedniej części – zostaw zakomentowany, żeby gra nie startowała sama:
+// playGame(3);
